@@ -61,7 +61,7 @@ The UI and flows were designed in Figma. This app implements those designs as an
 
 ## About me
 
-I’m a **Senior Product Designer** with a Figma-first process and hands-on experience using AI-assisted development (Cursor) to ship interactive prototypes and communicate effectively with engineering. This project is one example of that workflow.
+I’m a **Senior Product Designer** with a hands-on experience using AI-assisted development (Cursor, Windsurf, Antigravity, Claude Code, Figma Make, etc) to ship interactive prototypes and communicate effectively with engineering. This project is one example of that workflow.
 
 **Portfolio & contact:** [www.rockgomes.com](https://www.rockgomes.com)
 

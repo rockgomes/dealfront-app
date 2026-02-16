@@ -12,15 +12,18 @@ import {
 } from "@/components/ui/icons";
 import { Button } from "@/components/ui/Button";
 import type { ListFolder, ListItem } from "@/data/lists-mock";
+import type { ListTypeId } from "@/components/lists/ListsTypeTabs";
+import { ListsTypeTabs } from "@/components/lists/ListsTypeTabs";
 
 type ListsSidebarProps = {
-  listType: "companies" | "contacts";
+  listType: ListTypeId;
   folders: ListFolder[];
   lists: ListItem[];
   selectedListId: string | null;
   expandedFolderIds: Set<string>;
   onSelectList: (listId: string) => void;
   onToggleFolder: (folderId: string) => void;
+  onListTypeChange?: (type: ListTypeId) => void;
   onCreateList?: () => void;
   onCreateFolder?: () => void;
 };
@@ -33,14 +36,15 @@ export function ListsSidebar({
   expandedFolderIds,
   onSelectList,
   onToggleFolder,
+  onListTypeChange,
   onCreateList,
   onCreateFolder,
 }: ListsSidebarProps) {
   const createLabel =
-    listType === "companies" ? "Create company list" : "Create contact list";
+    listType === "companies" ? "New company list" : "New contact list";
 
   return (
-    <aside className="bg-white w-[245px] min-h-screen self-stretch flex flex-col border-r border-[#e8ecf1]">
+    <aside className="bg-white w-[295px] min-h-screen self-stretch flex flex-col border-r border-[#e8ecf1]">
       <div className="flex flex-col flex-1 min-h-0 pt-[24px] pb-[24px] px-[16px]">
         <div className="flex items-center justify-between gap-[8px] mb-[16px]">
           <span className="text-[16px] font-bold text-[#161616]">Lists</span>
@@ -53,7 +57,15 @@ export function ListsSidebar({
           </button>
         </div>
 
-        <div className="flex items-center gap-[8px] mb-[24px]">
+        <div className="mb-[16px]">
+          <ListsTypeTabs
+            activeListType={listType}
+            onListTypeChange={onListTypeChange}
+            variant="sidebar"
+          />
+        </div>
+
+        <div className="flex items-center justify-between w-full mb-[24px]">
           <Button onClick={onCreateList} type="button">
             <span className="flex items-center gap-[8px]">
               <PlusIcon className="size-[20px]" />
@@ -63,7 +75,7 @@ export function ListsSidebar({
           <button
             type="button"
             onClick={onCreateFolder}
-            className="size-[40px] flex items-center justify-center rounded-[5px] border border-[#dfe6f0] text-[#4d5666] hover:bg-[#f7f9fc] hover:text-[#1b70f0] cursor-pointer transition-colors"
+            className="size-[40px] shrink-0 flex items-center justify-center rounded-[5px] border border-[#dfe6f0] text-[#4d5666] hover:bg-[#f7f9fc] hover:text-[#1b70f0] cursor-pointer transition-colors"
             aria-label="Create folder"
           >
             <FolderIcon className="size-[20px]" />

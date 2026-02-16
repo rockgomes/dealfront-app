@@ -5,20 +5,29 @@ export type ListTypeId = "companies" | "contacts";
 type ListsTypeTabsProps = {
   activeListType: ListTypeId;
   onListTypeChange?: (type: ListTypeId) => void;
+  variant?: "default" | "sidebar";
 };
 
 export function ListsTypeTabs({
   activeListType,
   onListTypeChange,
+  variant = "default",
 }: ListsTypeTabsProps) {
   const tabs: { id: ListTypeId; label: string }[] = [
     { id: "companies", label: "Companies" },
     { id: "contacts", label: "Contacts" },
   ];
 
+  const isSidebar = variant === "sidebar";
+  const wrapperClass = isSidebar
+    ? "flex h-[40px] items-center gap-[16px]"
+    : "bg-white border-b border-[#dfe6f0] flex h-[56px] items-center px-[16px] shadow-[0px_1px_4px_0px_rgba(0,0,0,0.12)]";
+  const innerClass = isSidebar ? "flex h-full items-center gap-[16px]" : "flex h-full items-center gap-[24px]";
+  const buttonClass = isSidebar ? "px-[8px] py-[6px]" : "px-[12px] py-[8px]";
+
   return (
-    <div className="bg-white border-b border-[#dfe6f0] flex h-[56px] items-center px-[16px] shadow-[0px_1px_4px_0px_rgba(0,0,0,0.12)]">
-      <div className="flex h-full items-center gap-[24px]">
+    <div className={wrapperClass}>
+      <div className={innerClass}>
         {tabs.map((tab) => {
           const isActive = activeListType === tab.id;
           return (
@@ -26,7 +35,7 @@ export function ListsTypeTabs({
               key={tab.id}
               type="button"
               onClick={() => onListTypeChange?.(tab.id)}
-              className={`relative flex h-full cursor-pointer items-center justify-center rounded-[5px] px-[12px] py-[8px] transition-colors ${
+              className={`relative flex h-full cursor-pointer items-center justify-center rounded-[5px] transition-colors ${buttonClass} ${
                 isActive
                   ? "text-[#1b70f0] font-bold"
                   : "text-[#4d5666] font-bold hover:bg-[#f7f9fc] hover:text-[#1b70f0]"

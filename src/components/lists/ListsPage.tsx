@@ -4,46 +4,63 @@ import { useState } from "react";
 import { TopNav } from "@/components/settings/TopNav";
 import { ListsContentArea } from "@/components/lists/ListsContentArea";
 import { ListsSidebar } from "@/components/lists/ListsSidebar";
-import { ListsTypeTabs, type ListTypeId } from "@/components/lists/ListsTypeTabs";
-import { mockFolders, mockLists } from "@/data/lists-mock";
+import type { ListTypeId } from "@/components/lists/ListsTypeTabs";
+import {
+  getMockFolders,
+  getMockLists,
+} from "@/data/lists-mock";
 
 const CARD_CLASS =
   "bg-white rounded-[5px] shadow-[0px_0px_0px_0px_rgba(0,0,0,0.05),0px_4px_8px_0px_rgba(43,49,49,0.15)] p-[24px]";
 
+function createInitialExpanded(type: ListTypeId): Set<string> {
+  return type === "companies" ? new Set(["f1"]) : new Set(["tf1"]);
+}
+
 export function ListsPage() {
   const [listType, setListType] = useState<ListTypeId>("companies");
   const [selectedListId, setSelectedListId] = useState<string | null>(null);
-  const [expandedFolderIds, setExpandedFolderIds] = useState<Set<string>>(
-    () => new Set(["f1"])
-  );
+  const [expandedFolderIdsByType, setExpandedFolderIdsByType] = useState<
+    Record<ListTypeId, Set<string>>
+  >(() => ({
+    companies: createInitialExpanded("companies"),
+    contacts: createInitialExpanded("contacts"),
+  }));
+
+  function handleListTypeChange(type: ListTypeId) {
+    setListType(type);
+    setSelectedListId(null);
+  }
 
   function toggleFolder(folderId: string) {
-    setExpandedFolderIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(folderId)) next.delete(folderId);
-      else next.add(folderId);
-      return next;
+    setExpandedFolderIdsByType((prev) => {
+      const currentSet = prev[listType];
+      const nextSet = new Set(currentSet);
+      if (nextSet.has(folderId)) nextSet.delete(folderId);
+      else nextSet.add(folderId);
+      return { ...prev, [listType]: nextSet };
     });
   }
+
+  const folders = getMockFolders(listType);
+  const lists = getMockLists(listType);
+  const expandedFolderIds = expandedFolderIdsByType[listType];
 
   return (
     <div className="bg-[#e8ecf1] min-h-screen min-w-[1440px] relative overflow-hidden">
       <div className="fixed left-0 right-0 top-0 z-20">
         <TopNav />
-        <ListsTypeTabs
-          activeListType={listType}
-          onListTypeChange={setListType}
-        />
       </div>
-      <div className="fixed left-0 top-[112px] bottom-0 z-10 overflow-y-auto">
+      <div className="fixed left-0 top-[56px] bottom-0 z-10 overflow-y-auto">
         <ListsSidebar
           listType={listType}
-          folders={mockFolders}
-          lists={mockLists}
+          folders={folders}
+          lists={lists}
           selectedListId={selectedListId}
           expandedFolderIds={expandedFolderIds}
           onSelectList={setSelectedListId}
           onToggleFolder={toggleFolder}
+          onListTypeChange={handleListTypeChange}
         />
       </div>
       <ListsContentArea>
