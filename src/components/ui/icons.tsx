@@ -23,4 +23,5 @@ export {
   FolderIcon,
   DocumentTextIcon,
   LockClosedIcon,
+  ArrowDownTrayIcon,
 } from "@heroicons/react/24/outline";

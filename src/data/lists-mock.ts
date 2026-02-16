@@ -49,3 +49,60 @@ export function getMockFolders(listType: ListTypeId): ListFolder[] {
 export function getMockLists(listType: ListTypeId): ListItem[] {
   return listType === "companies" ? mockListsCompanies : mockListsContacts;
 }
+
+// Table row data for list detail (companies view)
+export type CompanyRow = {
+  id: string;
+  companyName: string;
+  tags: string[];
+  website: string;
+  description: string;
+  city: string;
+  country: string;
+};
+
+const MAX_TABLE_ROWS = 20;
+
+const companyNames = [
+  "Phoenix Flame Foundry",
+  "Northern Tech Solutions",
+  "Summit Design Co",
+  "River Valley Industries",
+  "Coastal Analytics Inc",
+  "Metro Build Ltd",
+  "Horizon Consulting",
+  "Peak Performance Group",
+  "Swift Logistics",
+  "Clear View Software",
+  "Green Field Partners",
+  "Blue Ocean Ventures",
+  "Silver Line Manufacturing",
+  "Golden Gate Services",
+  "Red Stone Labs",
+  "Urban Scale Co",
+  "Next Wave Digital",
+  "Prime Data Systems",
+  "Core Logic Ltd",
+  "Vertex Solutions",
+];
+
+const tagsPool = ["B2B", "SaaS", "Enterprise", "SMB", "Tech", "Finance", "Healthcare", "Retail", "Games", "Movies"];
+
+function randomTags(): string[] {
+  const n = Math.floor(Math.random() * 3) + 1;
+  const shuffled = [...tagsPool].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, n);
+}
+
+export function getMockCompanyRows(count?: number): CompanyRow[] {
+  const limit = Math.min(count ?? 20, MAX_TABLE_ROWS);
+  return companyNames.slice(0, limit).map((name, i) => ({
+    id: `company-${i + 1}`,
+    companyName: name,
+    tags: randomTags(),
+    website: `www.${name.toLowerCase().replace(/\s/g, "")}.com`,
+    description: `${name} provides services in their industry.`,
+    city: ["Berlin", "Munich", "Hamburg", "Cologne", "Frankfurt"][i % 5],
+    country: i % 3 === 0 ? "DE" : "AT",
+  }));
+}

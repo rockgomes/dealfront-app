@@ -9,8 +9,9 @@ import {
   getMockFolders,
   getMockLists,
 } from "@/data/lists-mock";
+import { ListsDetailCard } from "@/components/lists/ListsDetailCard";
 
-const CARD_CLASS =
+const EMPTY_CARD_CLASS =
   "bg-white rounded-[5px] shadow-[0px_0px_0px_0px_rgba(0,0,0,0.05),0px_4px_8px_0px_rgba(43,49,49,0.15)] p-[24px]";
 
 function createInitialExpanded(type: ListTypeId): Set<string> {
@@ -19,7 +20,7 @@ function createInitialExpanded(type: ListTypeId): Set<string> {
 
 export function ListsPage() {
   const [listType, setListType] = useState<ListTypeId>("companies");
-  const [selectedListId, setSelectedListId] = useState<string | null>(null);
+  const [selectedListId, setSelectedListId] = useState<string | null>("l1");
   const [expandedFolderIdsByType, setExpandedFolderIdsByType] = useState<
     Record<ListTypeId, Set<string>>
   >(() => ({
@@ -45,6 +46,9 @@ export function ListsPage() {
   const folders = getMockFolders(listType);
   const lists = getMockLists(listType);
   const expandedFolderIds = expandedFolderIdsByType[listType];
+  const selectedList = selectedListId != null
+    ? lists.find((l) => l.id === selectedListId) ?? null
+    : null;
 
   return (
     <div className="bg-[#e8ecf1] min-h-screen min-w-[1440px] relative overflow-hidden">
@@ -64,8 +68,8 @@ export function ListsPage() {
         />
       </div>
       <ListsContentArea>
-        {selectedListId == null ? (
-          <div className={CARD_CLASS}>
+        {selectedList == null ? (
+          <div className={EMPTY_CARD_CLASS}>
             <p className="text-[18px] font-bold text-[#161616]">
               Select a list
             </p>
@@ -74,14 +78,7 @@ export function ListsPage() {
             </p>
           </div>
         ) : (
-          <div className={CARD_CLASS}>
-            <p className="text-[18px] font-bold text-[#161616]">
-              List content
-            </p>
-            <p className="text-[14px] text-[#646f83] mt-[8px]">
-              List detail, toolbar, and table will go here.
-            </p>
-          </div>
+          <ListsDetailCard list={selectedList} listType={listType} />
         )}
       </ListsContentArea>
     </div>
