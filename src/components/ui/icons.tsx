@@ -18,4 +18,9 @@ export {
   UserIcon,
   InformationCircleIcon,
   EllipsisVerticalIcon,
+  ListBulletIcon,
+  PlusIcon,
+  FolderIcon,
+  DocumentTextIcon,
+  LockClosedIcon,
 } from "@heroicons/react/24/outline";
