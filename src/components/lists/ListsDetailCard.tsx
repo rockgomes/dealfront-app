@@ -3,9 +3,16 @@
 import { useMemo, useState } from "react";
 import {
   ArrowDownTrayIcon,
+  BellIcon,
+  ChevronDownIcon,
+  Cog6ToothIcon,
   EllipsisVerticalIcon,
+  TableSettingsIcon,
   MagnifyingGlassIcon,
+  ShareIcon,
 } from "@/components/ui/icons";
+import { DropdownMenu } from "@/components/ui/DropdownMenu";
+import { Avatar } from "@/components/ui/Avatar";
 import { DataTable, type DataTableColumn } from "@/components/settings/DataTable";
 import { Input } from "@/components/ui/Input";
 import type { ListItem } from "@/data/lists-mock";
@@ -114,49 +121,138 @@ export function ListsDetailCard({ list, listType }: ListsDetailCardProps) {
             </span>
           )}
         </div>
-        <div className="flex items-center gap-[8px]">
+        <div className="flex items-center gap-[8px] flex-wrap">
+          {/* Owner pill */}
+          <span
+            className={`text-[14px] font-bold rounded-[100px] px-[12px] py-[6px] ${
+              list.isOwner !== false
+                ? "text-[#1b70f0] bg-[#e8f0fc]"
+                : "text-[#4d5666] bg-[#e8ecf1]"
+            }`}
+          >
+            {list.isOwner !== false ? "Owner" : "Shared"}
+          </span>
+          {/* Users with access */}
+          {list.sharedWith && list.sharedWith.length > 0 && (
+            <div className="flex items-center -space-x-1.5">
+              {list.sharedWith.slice(0, 4).map((user) => (
+                <Avatar
+                  key={user.id}
+                  name={user.name}
+                  src={user.avatarUrl}
+                  size="sm"
+                  className="ring-2 ring-white"
+                />
+              ))}
+              {list.sharedWith.length > 4 && (
+                <span className="text-[12px] font-bold text-[#4d5666] bg-[#e8ecf1] rounded-full size-[28px] flex items-center justify-center ring-2 ring-white shrink-0">
+                  +{list.sharedWith.length - 4}
+                </span>
+              )}
+            </div>
+          )}
           <button
             type="button"
-            className="text-[14px] font-bold text-[#1b70f0] px-[12px] py-[6px] rounded-[5px] hover:bg-[#f7f9fc] transition-colors"
+            className="size-[36px] flex items-center justify-center rounded-[5px] text-[#4d5666] hover:bg-[#f7f9fc] hover:text-[#1b70f0] transition-colors"
+            aria-label="Share list"
           >
-            Owner
+            <ShareIcon className="size-[20px]" />
+          </button>
+          <button
+            type="button"
+            className="flex items-center gap-[8px] h-[36px] px-[12px] rounded-[5px] border border-[#dfe6f0] text-[14px] font-bold text-[#4d5666] hover:bg-[#f7f9fc] hover:text-[#1b70f0] transition-colors"
+          >
+            <BellIcon className="size-[20px]" />
+            Create alert
           </button>
           <button
             type="button"
             className="size-[36px] flex items-center justify-center rounded-[5px] text-[#4d5666] hover:bg-[#f7f9fc] hover:text-[#1b70f0] transition-colors"
-            aria-label="More actions"
+            aria-label="Settings"
           >
-            <EllipsisVerticalIcon className="size-[20px]" />
+            <Cog6ToothIcon className="size-[20px]" />
           </button>
+          <DropdownMenu
+            align="end"
+            sideOffset={4}
+            trigger={
+              <button
+                type="button"
+                className="size-[36px] flex items-center justify-center rounded-[5px] text-[#4d5666] hover:bg-[#f7f9fc] hover:text-[#1b70f0] transition-colors"
+                aria-label="More actions"
+              >
+                <EllipsisVerticalIcon className="size-[20px]" />
+              </button>
+            }
+            items={[
+              { label: "Edit list", onSelect: () => {} },
+              { label: "Duplicate list", onSelect: () => {} },
+              { label: "Delete list", onSelect: () => {} },
+            ]}
+          />
         </div>
       </div>
 
-      {/* Toolbar */}
+      {/* Toolbar: search, CRM actions, download, more (left) | Table settings (right) */}
       <div className="flex items-center justify-between gap-[16px] flex-wrap">
-        <div className="w-full min-w-[200px] max-w-[320px]">
-          <Input
-            id="lists-search"
-            placeholder={listType === "companies" ? "Search for companies" : "Search for contacts"}
-            className="mb-0"
-            icon={<MagnifyingGlassIcon className="size-[20px]" />}
+        <div className="flex items-center gap-[8px] flex-1 min-w-0">
+          <div className="min-w-[200px] max-w-[320px] flex-1">
+            <Input
+              id="lists-search"
+              placeholder={listType === "companies" ? "Search for companies" : "Search for contacts"}
+              className="mb-0"
+              icon={<MagnifyingGlassIcon className="size-[20px]" />}
+            />
+          </div>
+          <DropdownMenu
+            align="start"
+            sideOffset={4}
+            trigger={
+              <button
+                type="button"
+                className="flex items-center gap-[8px] h-[40px] px-[12px] rounded-[5px] border border-[#dfe6f0] text-[14px] font-bold text-[#4d5666] hover:bg-[#f7f9fc] hover:text-[#1b70f0] transition-colors"
+              >
+                CRM actions
+                <ChevronDownIcon className="size-[20px]" />
+              </button>
+            }
+            items={[
+              { label: "Sync with CRM", onSelect: () => {} },
+              { label: "View in CRM", onSelect: () => {} },
+            ]}
           />
-        </div>
-        <div className="flex items-center gap-[8px]">
-          <button
-            type="button"
-            className="flex items-center gap-[8px] h-[40px] px-[12px] rounded-[5px] border border-[#dfe6f0] text-[14px] font-bold text-[#4d5666] hover:bg-[#f7f9fc] hover:text-[#1b70f0] transition-colors"
-          >
-            <ArrowDownTrayIcon className="size-[20px]" />
-            Export
-          </button>
           <button
             type="button"
             className="size-[40px] flex items-center justify-center rounded-[5px] text-[#4d5666] hover:bg-[#f7f9fc] hover:text-[#1b70f0] transition-colors"
-            aria-label="More options"
+            aria-label="Download"
           >
-            <EllipsisVerticalIcon className="size-[20px]" />
+            <ArrowDownTrayIcon className="size-[20px]" />
           </button>
+          <DropdownMenu
+            align="start"
+            sideOffset={4}
+            trigger={
+              <button
+                type="button"
+                className="size-[40px] flex items-center justify-center rounded-[5px] text-[#4d5666] hover:bg-[#f7f9fc] hover:text-[#1b70f0] transition-colors"
+                aria-label="More options"
+              >
+                <EllipsisVerticalIcon className="size-[20px]" />
+              </button>
+            }
+            items={[
+              { label: "Export", onSelect: () => {} },
+              { label: "Bulk edit", onSelect: () => {} },
+            ]}
+          />
         </div>
+        <button
+          type="button"
+          className="size-[40px] flex items-center justify-center rounded-[5px] text-[#4d5666] hover:bg-[#f7f9fc] hover:text-[#1b70f0] transition-colors"
+          aria-label="Table settings"
+        >
+          <TableSettingsIcon className="size-[20px]" />
+        </button>
       </div>
 
       {/* Table */}

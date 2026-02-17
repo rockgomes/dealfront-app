@@ -4,11 +4,21 @@ export type ListFolder = {
   locked?: boolean;
 };
 
+export type ListSharedWithUser = {
+  id: string;
+  name: string;
+  avatarUrl?: string;
+};
+
 export type ListItem = {
   id: string;
   name: string;
   folderId: string | null;
   count?: number;
+  /** Whether the current user owns this list (drives "Owner" pill styling). */
+  isOwner?: boolean;
+  /** Users with access to the list (shown as avatars in header). */
+  sharedWith?: ListSharedWithUser[];
 };
 
 export type ListTypeId = "companies" | "contacts";
@@ -21,8 +31,15 @@ export const mockFoldersCompanies: ListFolder[] = [
 ];
 
 export const mockListsCompanies: ListItem[] = [
-  { id: "l1", name: "CRM Connected", folderId: "f1", count: 29000 },
-  { id: "l2", name: "CRM Possible Matches", folderId: "f1" },
+  {
+    id: "l1",
+    name: "CRM Connected",
+    folderId: "f1",
+    count: 29000,
+    isOwner: true,
+    sharedWith: [{ id: "u1", name: "Jane Smith" }],
+  },
+  { id: "l2", name: "CRM Possible Matches", folderId: "f1", isOwner: false },
   { id: "l3", name: "And another list", folderId: "f2" },
   { id: "l4", name: "And another...", folderId: "f2" },
   { id: "l5", name: "And another...", folderId: "f3" },
