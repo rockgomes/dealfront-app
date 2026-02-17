@@ -1,0 +1,61 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Design System/Design Tokens" />
+
+# Design Tokens
+
+This page documents the design tokens used across the Dealfront app. They are defined in `src/app/globals.css` and exposed via Tailwind's theme (e.g. `bg-primary`, `text-neutral-600`).
+
+## Colors
+
+### Primary
+| Token | Value | Usage |
+|-------|--------|--------|
+| `--color-primary` | `#024ec1` | Primary actions, active states |
+| `--color-primary-hover` | `#1b70f0` | Hover state for primary |
+| `--color-primary-active` | `#073572` | Active/pressed state |
+
+### Neutrals (text and borders)
+| Token | Value | Usage |
+|-------|--------|--------|
+| `--color-neutral-600` | `#4d5666` | Body text, labels |
+| `--color-neutral-500` | `#646f83` | Secondary text |
+| `--color-neutral-400` | `#9ba6b9` | Placeholders, disabled |
+| `--color-neutral-300` | `#b1bccf` | Borders (light) |
+
+### Greys (surfaces and backgrounds)
+| Token | Value | Usage |
+|-------|--------|--------|
+| `--color-grey-50` | `#f7f9fc` | Hover backgrounds, header cells |
+| `--color-grey-100` | `#e8ecf1` | Page background, dividers |
+| `--color-grey-200` | `#dfe6f0` | Borders |
+| `--color-grey-300` | `#cedaed` | Table borders |
+| `--color-grey-selected` | `#dbeeff` | Selected row/list item |
+
+### Semantic (chips / status)
+| Token | Value | Usage |
+|-------|--------|--------|
+| `--chip-success` | `#49b149` | Success badges |
+| `--chip-warning` | `#ffbe1a` | Warning badges |
+| `--chip-info` | `#1b70f0` | Info badges |
+
+### Root (legacy / raw)
+| Token | Value |
+|-------|--------|
+| `--background` | `#e8ecf1` |
+| `--foreground` | `#161616` |
+
+## Typography
+
+- **Font**: Inter (via `--font-inter` from Next.js font in the app layout). Storybook may fall back to system sans.
+- **Weights**: Regular and Bold are used in the UI (e.g. labels 12px bold, body 14px).
+
+## Usage in Tailwind
+
+Use the theme-aware classes so components stay consistent:
+
+- `bg-primary`, `bg-primary-hover`, `text-primary`
+- `text-neutral-600`, `text-neutral-500`, `border-neutral-400`
+- `bg-grey-50`, `bg-grey-100`, `border-grey-200`, `bg-grey-selected`
+
+Where the design uses raw hex (e.g. `#161616` for headings), consider mapping to a token or adding a `--color-heading` token for consistency.

@@ -56,7 +56,7 @@ export function DataTable<T>({
   }
 
   const gridCols = selectable
-    ? `48px ${columnTemplate}`
+    ? `40px ${columnTemplate}`
     : columnTemplate;
 
   const headerCellBorder = "border-b border-[#cedaed] border-r border-[#e8ecf1]";
@@ -81,7 +81,7 @@ export function DataTable<T>({
       {columns.map((col, idx) => (
         <div
           key={col.key}
-          className={`bg-[#f7f9fc] h-[40px] flex items-center px-[10px] ${idx === columns.length - 1 ? lastHeaderCellBorder : headerCellBorder}`}
+          className={`bg-[#f7f9fc] h-[40px] flex items-center px-[10px] min-w-0 ${idx === columns.length - 1 ? lastHeaderCellBorder : headerCellBorder}`}
           style={col.width ? { minWidth: col.width } : undefined}
         >
           {col.header}
@@ -110,7 +110,7 @@ export function DataTable<T>({
             {columns.map((col, idx) => (
               <div
                 key={col.key}
-                className={`h-[40px] flex items-center px-[10px] ${idx === columns.length - 1 ? lastBodyCellBorder : bodyCellBorder} transition-colors ${rowBg}`}
+                className={`h-[40px] flex items-center px-[10px] min-w-0 ${idx === columns.length - 1 ? lastBodyCellBorder : bodyCellBorder} transition-colors ${rowBg}`}
               >
                 {col.renderCell(row)}
               </div>

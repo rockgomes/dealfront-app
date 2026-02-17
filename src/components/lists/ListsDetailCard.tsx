@@ -14,6 +14,7 @@ import {
 import { DropdownMenu } from "@/components/ui/DropdownMenu";
 import { Avatar } from "@/components/ui/Avatar";
 import { DataTable, type DataTableColumn } from "@/components/settings/DataTable";
+import { Pagination } from "@/components/settings/Pagination";
 import { Input } from "@/components/ui/Input";
 import type { ListItem } from "@/data/lists-mock";
 import {
@@ -273,6 +274,16 @@ export function ListsDetailCard({ list, listType }: ListsDetailCardProps) {
           </div>
         )}
       </div>
+
+      {/* Pagination (same as Settings) */}
+      {listType === "companies" && (
+        <div className="flex items-center justify-end gap-[16px]">
+          <p className="text-[14px] text-[#4d5666]">
+            1-{companyRows.length} of {list.count != null ? formatCount(list.count) : companyRows.length}
+          </p>
+          <Pagination />
+        </div>
+      )}
     </div>
   );
 }
